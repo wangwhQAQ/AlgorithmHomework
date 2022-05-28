@@ -100,13 +100,13 @@ int main() {
     Point a , b ;
     Point* points  =  new Point[num];
     setRandomPoint(points, num);
-    cout << "随机生成点如下：" << endl;
+    cout << "create:" << endl;
     for (int i = 0; i < num; ++i) {
         cout << "(" << points[i].x << "," << points[i].y << ")" << endl;
     }
     sort(points, points + 10, compareX);
     double distance = findPointPair(points, num, a, b);
-    cout << "最近距离为： " << distance << endl;
+    cout << "distance: " << distance << endl;
     cout << "(" << a.x << "," << a.y << ")" <<"  "<< "(" << b.x << "," << b.y << ")" << endl;
 
     return 0;
