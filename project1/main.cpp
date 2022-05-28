@@ -96,6 +96,18 @@ double findPointPair(Point points[], int length, Point &a, Point &b){
 }
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    int num = 10;
+    Point a , b ;
+    Point* points  =  new Point[num];
+    setRandomPoint(points, num);
+    cout << "随机生成点如下：" << endl;
+    for (int i = 0; i < num; ++i) {
+        cout << "(" << points[i].x << "," << points[i].y << ")" << endl;
+    }
+    sort(points, points + 10, compareX);
+    double distance = findPointPair(points, num, a, b);
+    cout << "最近距离为： " << distance << endl;
+    cout << "(" << a.x << "," << a.y << ")" <<"  "<< "(" << b.x << "," << b.y << ")" << endl;
+
     return 0;
 }
