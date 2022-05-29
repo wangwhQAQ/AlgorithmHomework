@@ -15,8 +15,8 @@ typedef struct Point{
 void setRandomPoint(Point *points, int length){
     srand(unsigned (time(NULL)));
     for (int i = 0; i < length; ++i) {
-        points[i].x = (rand() % (int)(RANGE )) / RANGE ;
-        points[i].y = (rand() % (int)(RANGE )) / RANGE ;
+        points[i].x = (rand() % (int)(RANGE * 100 )) / RANGE ;
+        points[i].y = (rand() % (int)(RANGE * 100 )) / RANGE ;
     }
 }
 
@@ -97,7 +97,7 @@ double findPointPair(Point points[], int length, Point &a, Point &b){
 }
 
 int main() {
-    int num = 5;
+    int num = 100;
     Point a , b ;
     Point* points  =  new Point[num];
     setRandomPoint(points, num);
