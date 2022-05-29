@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #define RANGE 100.0
-#define INFINATE_DISTANCE 65534
+#define INFINATE_DISTANCE 1024.0
 
 using namespace std;
 
@@ -15,8 +15,8 @@ typedef struct Point{
 void setRandomPoint(Point *points, int length){
     srand(unsigned (time(NULL)));
     for (int i = 0; i < length; ++i) {
-        points[i].x = (rand() % (int)(RANGE * 200)) / RANGE - RANGE;
-        points[i].y = (rand() % (int)(RANGE * 200)) / RANGE - RANGE;
+        points[i].x = (rand() % (int)(RANGE )) / RANGE ;
+        points[i].y = (rand() % (int)(RANGE )) / RANGE ;
     }
 }
 
@@ -33,7 +33,7 @@ bool compareY(Point a, Point b){
 }
 
 double findPointPair(Point points[], int length, Point &a, Point &b){
-    int distance;
+    double distance;
     Point a1, b1, a2, b2;
     if (length < 2){
         distance = INFINATE_DISTANCE;
@@ -48,7 +48,7 @@ double findPointPair(Point points[], int length, Point &a, Point &b){
         for (int i = 0; i < length/2; ++i) {
             left[i] = points[i];
         }
-        for (int i = length/2, k = 0 ; i < length ; i ++){
+        for (int i = length/2 , k = 0 ; i < length ; i ++){
             right[k++] = points[i];
         }
         double d1 = findPointPair(left, length/2, a1, b1);
@@ -91,20 +91,22 @@ double findPointPair(Point points[], int length, Point &a, Point &b){
             }
         }
 
-        return distance;
     }
+
+    return distance;
 }
 
 int main() {
-    int num = 10;
+    int num = 5;
     Point a , b ;
     Point* points  =  new Point[num];
     setRandomPoint(points, num);
+
+    sort(points, points + num, compareX);
     cout << "create:" << endl;
     for (int i = 0; i < num; ++i) {
         cout << "(" << points[i].x << "," << points[i].y << ")" << endl;
     }
-    sort(points, points + 10, compareX);
     double distance = findPointPair(points, num, a, b);
     cout << "distance: " << distance << endl;
     cout << "(" << a.x << "," << a.y << ")" <<"  "<< "(" << b.x << "," << b.y << ")" << endl;
