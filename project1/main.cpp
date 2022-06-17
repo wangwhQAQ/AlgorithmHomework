@@ -111,5 +111,6 @@ int main() {
     cout << "distance: " << distance << endl;
     cout << "(" << a.x << "," << a.y << ")" <<"  "<< "(" << b.x << "," << b.y << ")" << endl;
 
+    system("pause");
     return 0;
 }

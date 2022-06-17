@@ -32,6 +32,7 @@ public:
                 }
                 cout<< endl;
             }
+            cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
         }
         Node(char name,Node* father, int chart[3][3],int distance,int cost){
             this->name = name;
@@ -42,7 +43,7 @@ public:
         }
 }Node;
 
-//涓婁笅宸﹀彸
+//上下左右
 vector<int> Move = {1,2,3,4};
 
 bool flag = false;
@@ -58,14 +59,16 @@ bool compare2(Node *A, Node *B){
 priority_queue<Node*,vector<Node*>,decltype(&compare1)> open(compare1);
 priority_queue<Node*,vector<Node*>,decltype(&compare2)> close(compare2);
 
-int init[N][N] = {
-        {2, 8, 3},
+int init[N][N]
+     = {{2, 8, 3},
         {1, 6, 4},
         {7, 0, 5}};
 int final[N][N] = {
         {2, 8, 3},
         {1, 4, 5},
         {7, 6, 0}};
+
+//设置目标位置，0为2,2   1为1,0   2为0,0    遍历一次final数组可以得到
 int status[N*N][2] = {{2, 2},
                       {1, 0},
                       {0, 0},
@@ -87,7 +90,7 @@ bool isEqual(int a[3][3] , int b[3][3]){
     return true;
 }
 
-//褰撳墠鐘舵�佸埌鐩爣鐘舵�佺殑浠ｄ环
+//当前状态到目标状态的代价
 int getDistance(int a[3][3]){
     int d = 0 ;
     for(int i = 0 ; i < N ; i ++ ){
@@ -213,6 +216,25 @@ void AStar(Node *node){
 }
 
 int main() {
+    for (int i = 0; i < N; ++i) {
+        cout << "请输入初始状态 第" << i << "行,中间用空格隔开：" <<endl;
+        for (int j = 0; j < N; ++j) {
+            cin >> init[i][j];
+        }
+    }
+    for (int i = 0; i < N; ++i) {
+        cout << "请输入结束状态 第" << i << "行,中间用空格隔开：" <<endl;
+        for (int j = 0; j < N; ++j) {
+            cin >> final[i][j];
+        }
+    }
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            status[final[i][j]][0] = i;
+            status[final[i][j]][1] = j;
+        }
+    }
+
     Node* first = new Node('A', NULL, init, getDistance(init), 0);
     open.push(first);
     while(open.size() > 0  &&  !flag){
@@ -239,5 +261,6 @@ int main() {
         stk.pop();
     }
 
+    system("pause");
     return 0;
 }

@@ -36,6 +36,7 @@ int **matrix;
 vector<int> sNode;
 vector<Node> nList;
 
+//¹¹½¨¾ØÕó£¨Ã»ÓÐÓÃµ½£©
 int** initVector(int num, vector<Node> nodeList){
     set<char> collection;
     for (int i = 0; i < num; ++i) {
@@ -63,7 +64,7 @@ int** initVector(int num, vector<Node> nodeList){
 
     return matrix;
 }
-
+//ÅÅÐò£¨Ã»ÓÐÓÃµ½£©
 vector<int> sortedNode(int num, vector<Node> nodeList){
     vector<int> sortNode;
     for (int i = 0; i < num; ++i) {
@@ -85,10 +86,11 @@ vector<int> sortedNode(int num, vector<Node> nodeList){
 void readFile(){
     vector<Node> nodeList;
     ifstream fin;
-    fin.open("F:\\C++ WorkPlace\\AlgorithmHomework\\project3\\input.txt", ios::in);
+    fin.open("input.txt", ios::in);
 
     string buff;
     int num = 0;
+    cout << "¶ÁÈëÂ·¾¶:" << endl;
     while (getline(fin,buff)){
         cout << buff << endl;
         char head = buff[0];
@@ -107,24 +109,24 @@ void readFile(){
 void outFile(char start, vector<Path> passWay){
     vector<Node> nodeList;
     ofstream fout;
-    fout.open("F:\\C++ WorkPlace\\AlgorithmHomework\\project3\\LOG.txt", ios::app);
+    fout.open("LOG.txt", ios::app);
 
-    fout << "èµ·ç‚¹ï¼š" << start << endl;
+    fout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<ÊäÈëµã£º" << start << "¿ªÊ¼<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
     for (int i = 0; i < passWay.size(); ++i) {
-        fout << "start:"<<passWay[i].start << endl;
-        fout << "end:" << passWay[i].end << endl ;
-        fout << "path:";
+        fout << "Æðµã:"<<passWay[i].start << endl;
+        fout << "ÖÕµã:" << passWay[i].end << endl ;
+        fout << "Â·¾¶:";
         for (int j = 0; j < passWay[i].path.size(); ++j) {
             fout <<  passWay[i].path[j] << '-';
         }
-        fout << endl;
-        fout << "cost:" << passWay[i].cost << endl;
+        fout << "×ÜÂ·¾¶³¤:" << passWay[i].cost << endl;
         fout << endl;
     }
-
+    fout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<ÊäÈëµã£º" << start << "½áÊø<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
     fout.close();
 }
 
+//ÅÐ¶¨¶¥µãÊÇ·ñÔÚÁ´±íÖÐ
 bool isInVector(vector<char> v, char c){
     for (int i = 0; i < v.size(); ++i) {
         if (c == v[i]){
@@ -134,6 +136,7 @@ bool isInVector(vector<char> v, char c){
     return false;
 }
 
+//¸ù¾Ý ÒÑ¾­Â·¹ýµÄµã Ñ°ÕÒ ½ÓÏÂÀ´¿ÉÒÔµ½´ïµÄµã£¨Ã»ÓÃµ½£©
 vector<char> findNextNode(vector<char> passNode, vector<Node> nodeList) {
     vector<char> nextNode;
     for (int i = 0; i < nodeList.size(); ++i) {
@@ -143,8 +146,10 @@ vector<char> findNextNode(vector<char> passNode, vector<Node> nodeList) {
             nextNode.push_back(nodeList[i].a);
         }
     }
+    return nextNode;
 }
 
+//Ñ°ÕÒËùÓÐ¿ÉÒÔ×ßµÄÂ·ÖÐ×î¶ÌµÄÒ»Ìõ
 int findMinCost(vector<Path> possiableWay){
     int min = 1024;
     int offset = 0;
@@ -175,7 +180,7 @@ vector<Path> djkstra(char start, vector<int> sortNode, vector<Node> nodeList){
     passWay.push_back(startPath);
 
     vector<char> passNode;
-    passNode.push_back('a');
+    passNode.push_back(start);
 
     vector<char> nextNode;
 
@@ -218,20 +223,26 @@ vector<Path> djkstra(char start, vector<int> sortNode, vector<Node> nodeList){
 int main() {
     readFile();
     char start;
-    cin >> start;
-    vector<Path> passWay = djkstra(start,sNode,nList);
-    for (int i = 0; i < passWay.size(); ++i) {
-        cout << "start:"<<passWay[i].start << endl;
-        cout << "end:" << passWay[i].end << endl ;
-        cout << "path:";
-        for (int j = 0; j < passWay[i].path.size(); ++j) {
-            cout <<  passWay[i].path[j] << '-';
+    cout << "ÇëÊäÈëÆðµã:(Ã¿´ÎÊäÈë¶¼»áÔÚLOG.txtÖÐ´òÓ¡Êä³ö,ÊäÈë/ÖÕÖ¹³ÌÐò)" << endl;
+    while (cin >> start){
+        if (start == '/'){
+            break;
         }
-        cout << endl;
-        cout << "cost:" << passWay[i].cost << endl;
-        cout << endl;
+        vector<Path> passWay = djkstra(start,sNode,nList);
+    //    for (int i = 0; i < passWay.size(); ++i) {
+    //        cout << "start:"<<passWay[i].start << endl;
+    //        cout << "end:" << passWay[i].end << endl ;
+    //        cout << "path:";
+    //        for (int j = 0; j < passWay[i].path.size(); ++j) {
+    //            cout <<  passWay[i].path[j] << '-';
+    //        }
+    //        cout << endl;
+    //        cout << "cost:" << passWay[i].cost << endl;
+    //        cout << endl;
+    //    }
+        outFile(start,passWay);
     }
 
-    outFile(start,passWay);
+    system("pause");
     return 0;
 }

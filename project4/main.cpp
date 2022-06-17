@@ -5,20 +5,22 @@
 
 using namespace std;
 
-#define MAXCOST 180
+int N;
+vector<map<int,pair<int,double>>> probabilityMatrix;
+//int cost[4] = {30, 15, 20, 25};
+//double p[4] = {0.1, 0.2, 0.5, 0.3};
+//int maxMoney[5] = {180, 150, 135, 115, 90};
+//int minMoney[5] = {90, 60, 45, 25, 0};
+vector<int> cost;
+vector<double> p;
+vector<int> maxMoney;
+vector<int> minMoney;
 
-vector<map<int,pair<int,double>>> probabilityMatrix(5);
-int cost[4] = {30, 15, 20, 25};
-double p[4] = {0.1, 0.2, 0.5, 0.3};
-int maxMoney[5] = {180, 150, 135, 115, 90};
-int minMoney[5] = {90, 60, 45, 25, 0};
 
 pair<int,pair<int,double>> findBestKey(int index, int money){
     pair<int,double> best = {0,0};
     int bestOffset = 0;
-    if (minMoney[index] > money){
-        cout << index << "||" << money << endl;
-    }
+
     for (int i = minMoney[index]; i <= money; i = i + 5) {
         if (probabilityMatrix[index][i].second > best.second){
             bestOffset = i;
@@ -30,10 +32,10 @@ pair<int,pair<int,double>> findBestKey(int index, int money){
 
 void initMatrix(){
     map<int,pair<int,double>> temp;
-    for (int i = 0; i <= maxMoney[4]; i = i + 5) {
+    for (int i = 0; i <= maxMoney[N]; i = i + 5) {
         temp.insert({i, {0,1.0}});
     }
-    probabilityMatrix[4] = temp;
+    probabilityMatrix[N] = temp;
 }
 
 void buildMatrix(int index){
@@ -55,9 +57,57 @@ void buildMatrix(int index){
 }
 
 int main() {
+    int m;
+    cout << "请输入元件数量"<< endl;
+    cin >> N;
+    cout << "请输入最大金额"<< endl;
+    cin >> m;
+    cout << "请依次输入每个元件的花费，空格隔开"<< endl;
+    for (int i = 0; i < N; ++i) {
+        int temp;
+        cin >> temp;
+        cost.push_back(temp);
+    }
+    cout << "请依次输入每个元件的失效概率，空格隔开"<< endl;
+    for (int i = 0; i < N; ++i) {
+        double temp;
+        cin >> temp;
+        p.push_back(temp);
+    }
+
+    maxMoney.push_back(m);
+    for (int i = 1; i <= N; ++i) {
+        maxMoney.push_back(maxMoney[i-1] - cost[i-1]);
+    }
+
+    for (int i = 0; i <= N; ++i) {
+        minMoney.push_back(0);
+    }
+    for (int i = N-1; i >= 0; --i) {
+        minMoney[i] = minMoney[i+1] + cost[i];
+    }
+
+    probabilityMatrix.resize(N+1) ;
+
     initMatrix();
-    for (int i = 3; i >= 0 ; i--) {
+    for (int i = N-1; i >= 0 ; i--) {
         buildMatrix(i);
     }
+
+
+    cout<< "系统最大可靠性:" << probabilityMatrix[0][m].second << endl;
+    cout<< "各元件的数量依次为："<< endl;
+    int c[N],tool[N];
+    c[0] = m;
+    tool[0] = probabilityMatrix[0][m].first;
+    for (int i = 1; i < N; ++i) {
+        c[i] = c[i-1] - tool[i-1]*cost[i-1];
+        tool[i] = probabilityMatrix[i][c[i]].first;
+    }
+    for (int i = 0; i < N; ++i) {
+        cout << tool[i] << " ";
+    }
+    cout << endl;
+    system("pause");
     return 0;
 }
